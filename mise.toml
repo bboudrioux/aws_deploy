@@ -1,0 +1,27 @@
+[tools]
+terraform = "1.14.0"
+ansible = "latest"
+
+[tasks."infra:init"]
+description = "Initialise l'environnement Terraform"
+run = "cd terraform && terraform init"
+
+[tasks."infra:apply"]
+description = "Déploie l'infrastructure AWS"
+run = "cd terraform && terraform apply"
+
+[tasks."infra:destroy"]
+description = "Détruit l'infrastructure AWS"
+run = "cd terraform && terraform destroy"
+
+[tasks."app:deploy"]
+description = "Déploie l'application Angular via Ansible Docker (demande le mot de passe Vault)"
+run = "ansible-playbook -i ansible/hosts.yml ansible/deploy.yml --ask-vault-pass"
+
+[tasks."app:ping"]
+description = "Teste la connectivité Ansible avec le serveur"
+run = "ansible all -m ping -i ansible/hosts.yml"
+
+[tasks."vault:edit"]
+description = "Modifie les secrets GitLab chiffrés"
+run = "ansible-vault edit ansible/secrets.yml"
