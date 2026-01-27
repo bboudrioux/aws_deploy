@@ -123,10 +123,3 @@ cd terraform && terraform apply
 # Déploiement
 ansible-playbook -i ansible/hosts.yml ansible/deploy.yml --ask-vault-pass
 ```
-
----
-
-## Note de Sécurité
-
-Pour éviter des frais AWS inutiles, détruisez toujours l'infrastructure après vos tests :
-`mise run infra:destroy`
