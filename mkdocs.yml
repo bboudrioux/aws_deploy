@@ -1,0 +1,51 @@
+site_name: IaC AWS - Olympic Tracker Documentation
+site_description: Documentation technique du déploiement IaC sur AWS
+site_author: Brian Boudrioux
+
+# Configuration du thème
+theme:
+  name: material
+  language: fr
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Passer au mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Passer au mode clair
+  features:
+    - navigation.tabs # Menu horizontal en haut
+    - navigation.sections # Sections claires
+    - navigation.top # Bouton retour en haut
+    - content.code.copy # Bouton pour copier le code
+
+# Navigation (Structure du site)
+nav:
+  - Accueil: index.md
+  - Guide de démarrage:
+      - Prérequis: prerequisites.md
+      - Utilisation: usage.md
+  - Architecture technique:
+      - Infrastructure (Terraform): infrastructure.md
+      - Déploiement (Ansible): deployment.md
+
+# Extensions Markdown pour un meilleur rendu technique
+markdown_extensions:
+  - admonition # Pour les blocs de notes/avertissements
+  - pymdownx.details # Pour les sections repliables
+  - pymdownx.superfences # Meilleur support des blocs de code
+  - pymdownx.highlight: # Coloration syntaxique
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
