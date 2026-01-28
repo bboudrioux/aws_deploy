@@ -38,7 +38,7 @@ Pour des instructions détaillées, l'architecture complète et les guides de d�
 
 ---
 
-## 🚀 Démarrage Rapide
+## Démarrage Rapide
 
 ### 1. Cloner et installer les dépendances
 
