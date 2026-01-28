@@ -3,7 +3,7 @@
 [![Terraform](https://img.shields.io/badge/Terraform-1.14+-623CE4?logo=terraform)](https://www.terraform.io/)
 [![Ansible](https://img.shields.io/badge/Ansible-latest-EE0000?logo=ansible)](https://www.ansible.com/)
 [![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker)](https://www.docker.com/)
-[![Documentation](https://img.shields.io/badge/Docs-MkDocs-009485?logo=materialformkdocs)](https://votre-url-github-pages.io)
+[![Documentation](https://img.shields.io/badge/Docs-MkDocs-009485?logo=materialformkdocs)](https://bboudrioux.github.io/aws_deploy/)
 
 Ce dépôt contient l'automatisation complète (IaC) pour déployer l'application **IaC AWS - Olympic Tracker Documentation** sur AWS. Il combine la puissance de **Terraform** pour l'infrastructure et la flexibilité d'**Ansible** pour la configuration logicielle.
 
@@ -12,7 +12,7 @@ Ce dépôt contient l'automatisation complète (IaC) pour déployer l'applicatio
 ## Documentation complète
 
 Pour des instructions détaillées, l'architecture complète et les guides de dépannage, consultez notre site de documentation :
-[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://bboudrioux.github.io/aws_deploy/)
+**https://bboudrioux.github.io/aws_deploy/**
 
 ---
 
