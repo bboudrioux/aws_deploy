@@ -1,4 +1,6 @@
 container_name: olympic-tracker
 image_name: registry.gitlab.com/brianboudrioux/olympic-participation-tracker:latest
+pip_package: python3-pip
+pip_executable: pip3
 pip_install_packages:
   - name: docker

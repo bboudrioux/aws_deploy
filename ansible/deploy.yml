@@ -1,6 +1,16 @@
 - name: Deploy Olympic Tracker app
   hosts: app_server
   become: yes
+  pre_tasks:
+    - name: Update apt cache (Debian/Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Update dnf cache (Amazon Linux/RHEL)
+      dnf:
+        makecache: yes
+      when: ansible_os_family == "RedHat"
 
   vars_files:
     - secrets.yml
