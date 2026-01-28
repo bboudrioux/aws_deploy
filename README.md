@@ -1,125 +1,80 @@
-# Infrastructure as Code: AWS EC2 Deployment & Docker
+# IaC AWS - Olympic Tracker Documentation
 
-Ce projet automatise le provisionnement d'un serveur AWS et son déploiement applicatif via Docker et Ansible.
+[![Terraform](https://img.shields.io/badge/Terraform-1.14+-623CE4?logo=terraform)](https://www.terraform.io/)
+[![Ansible](https://img.shields.io/badge/Ansible-latest-EE0000?logo=ansible)](https://www.ansible.com/)
+[![Docker](https://img.shields.io/badge/Docker-enabled-2496ED?logo=docker)](https://www.docker.com/)
+[![Documentation](https://img.shields.io/badge/Docs-MkDocs-009485?logo=materialformkdocs)](https://votre-url-github-pages.io)
 
-## Prérequis
-
-- **Terraform**: v1.14.0 ou supérieur.
-- **Ansible**: Dernière version stable.
-- **Compte AWS**: Un compte actif avec les droits IAM nécessaires.
-- **Ansible Vault**: Mot de passe pour déchiffrer les secrets GitLab.
+Ce dépôt contient l'automatisation complète (IaC) pour déployer l'application **IaC AWS - Olympic Tracker Documentation** sur AWS. Il combine la puissance de **Terraform** pour l'infrastructure et la flexibilité d'**Ansible** pour la configuration logicielle.
 
 ---
 
-## Configuration AWS (Initialisation)
+## Documentation complète
 
-Avant de lancer Terraform, vous devez configurer vos accès AWS sur votre machine locale.
-
-### 1. Création de l'utilisateur IAM
-
-1. Connectez-vous à la console AWS et allez dans **IAM** > **Users** > **Create user**.
-2. Nommez l'utilisateur (ex: `terraform-user`).
-3. Attachez la politique de permissions : `AmazonEC2FullAccess` (ou une politique personnalisée restreinte).
-4. Une fois créé, allez dans l'onglet **Security credentials** de l'utilisateur.
-5. Cliquez sur **Create access key** et choisissez **Command Line Interface (CLI)**.
-6. Récupérez votre **Access Key ID** et votre **Secret Access Key**.
-
-### 2. Configuration locale (AWS CLI)
-
-Installez l'AWS CLI et configurez votre profil :
-
-```bash
-# Lancer la configuration
-aws configure
-```
-
-Saisissez les informations demandées :
-
-- **AWS Access Key ID** : [Votre clé]
-- **AWS Secret Access Key** : [Votre secret]
-- **Default region name** : `eu-west-3` (Paris)
-- **Default output format** : `json`
-
----
-
-## Caractéristiques du Projet
-
-### 1. Infrastructure (Terraform)
-
-- **Serveur**: Instance EC2 `t3.micro` (Ubuntu 24.04).
-- **Sécurité**: Groupe de sécurité autorisant **SSH (22)** et **HTTP (80)**.
-- **Accès**: Clé RSA 4096 bits générée dynamiquement dans `~/.ssh/`.
-
-### 2. Déploiement Applicatif (Ansible & Docker)
-
-- **Containerisation**: Application Angular "Olympic Tracker".
-- **Registre**: Authentification sécurisée au Container Registry de GitLab.
-- **Maintenance**: Nettoyage automatique des images Docker obsolètes (`docker_prune`).
-
-### 3. Gestion des Secrets (Ansible Vault)
-
-- **Fichier**: `ansible/secrets.yml` (chiffré en AES-256).
-- **Contenu**: Identifiants `gitlab_user` et `gitlab_token`.
-
-### 4. Automatisation du lien Terraform -> Ansible
-
-Le projet utilise un bloc `local_file` dans Terraform pour synchroniser l'inventaire Ansible :
-
-1. **Terraform** crée l'instance et récupère l'IP.
-2. Un fichier `ansible/hosts.yml` est généré dynamiquement avec le bon chemin vers la clé PEM.
-3. **Ansible** utilise directement cette configuration sans intervention manuelle.
+Pour des instructions détaillées, l'architecture complète et les guides de dépannage, consultez notre site de documentation :
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://bboudrioux.github.io/aws_deploy/)
 
 ---
 
 ## Structure du Projet
 
-```bash
+```text
 .
 ├── ansible/
-│   ├── hosts.yml       # Inventaire généré par Terraform
-│   ├── deploy.yml      # Playbook de déploiement
-│   └── secrets.yml     # Secrets chiffrés (Vault)
+│   ├── group_vars/      # Configuration métier (image, ports)
+│   ├── roles/
+│   │   └── app/         # Notre rôle applicatif (dépend de docker/pip)
+│   ├── deploy.yml       # Playbook principal
+│   ├── requirements.yml # Rôles communautaires (Galaxy)
+│   └── secrets.yml      # Secrets chiffrés (Vault)
 ├── terraform/
-│   └── main.tf         # Définition de l'infrastructure
-├── .gitignore          # Protection des secrets et clés
-├── mise.toml           # Raccourcis de commandes
-└── README.md           # Documentation
+│   ├── main.tf          # Instance EC2
+│   ├── security.tf      # Firewall (SG)
+│   ├── ansible.tf       # Génération dynamique de l'inventaire
+│   └── variables.tf     # Paramétrage Infra
+├── docs/                # Sources MkDocs
+└── mkdocs.yml           # Configuration du site de doc
 ```
 
 ---
 
-## Instructions d'Utilisation
+## 🚀 Démarrage Rapide
 
-### 1. Préparation des secrets (Ansible Vault)
-
-```bash
-ansible-vault create ansible/secrets.yml
-```
-
-Ajoutez vos identifiants :
-
-```yaml
-gitlab_user: "votre_utilisateur"
-gitlab_token: "votre_token_personnel"
-```
-
-### 2. Utilisation via `mise` (Recommandé)
-
-Le projet utilise [mise](https://mise.jdx.dev/) pour simplifier l'exécution.
-
-| Action             | Commande                 |
-| :----------------- | :----------------------- |
-| **Infrastructure** | `mise run infra:apply`   |
-| **Déploiement**    | `mise run app:deploy`    |
-| **Secrets**        | `mise run vault:edit`    |
-| **Destruction**    | `mise run infra:destroy` |
-
-### 3. Utilisation Manuelle
+### 1. Cloner et installer les dépendances
 
 ```bash
-# Provisionnement
-cd terraform && terraform apply
+git clone [https://github.com/votre-compte/olympic-tracker-infra.git](https://github.com/votre-compte/olympic-tracker-infra.git)
+cd olympic-tracker-infra
+ansible-galaxy install -r ansible/requirements.yml -p ansible/roles/
+```
 
-# Déploiement
+### 2. Provisionner l'infrastructure
+
+```bash
+cd terraform
+terraform init
+terraform apply
+```
+
+### 3. Déployer l'application
+
+```bash
+cd ..
 ansible-playbook -i ansible/hosts.yml ansible/deploy.yml --ask-vault-pass
 ```
+
+---
+
+## 🛠️ Stack Technique
+
+- **Cloud** : AWS (EC2, VPC, Security Groups)
+- **IaC** : Terraform
+- **Configuration** : Ansible (Roles, Vault, Galaxy)
+- **App** : Docker (Container Registry GitLab)
+- **Doc** : MkDocs (Material Theme)
+
+---
+
+## 📝 Licence
+
+Ce projet est sous licence MIT.
