@@ -1,0 +1,22 @@
+- name: Log into GitLab Container Registry
+  docker_login:
+    registry_url: registry.gitlab.com
+    username: "{{ gitlab_user }}"
+    password: "{{ gitlab_token }}"
+
+- name: Pull and Run Olympic Tracker Container
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ image_name }}"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "{{ app_published_port }}:{{ app_container_port }}"
+    pull: yes
+  notify: "Confirm Deployment"
+
+- name: Remove unused Docker data (Cleanup)
+  docker_prune:
+    images: yes
+    images_filters:
+      dangling: false

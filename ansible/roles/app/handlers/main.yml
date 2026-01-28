@@ -1,0 +1,3 @@
+- name: Confirm Deployment
+  debug:
+    msg: "Le conteneur {{ container_name }} a été mis à jour avec succès."
