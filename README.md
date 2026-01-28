@@ -75,6 +75,6 @@ ansible-playbook -i ansible/hosts.yml ansible/deploy.yml --ask-vault-pass
 
 ---
 
-## 📝 Licence
+## Licence
 
 Ce projet est sous licence MIT.
