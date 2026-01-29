@@ -1,5 +1,5 @@
 - name: Deploy Olympic Tracker app
-  hosts: app_server
+  hosts: app_servers
   become: yes
   pre_tasks:
     - name: Update apt cache (Debian/Ubuntu)
@@ -17,3 +17,9 @@
 
   roles:
     - app
+
+- name: Deploy and configure HAProxy
+  hosts: load_balancers
+  become: yes
+  roles:
+    - haproxy
