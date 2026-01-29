@@ -1,8 +1,18 @@
 resource "local_file" "ansible_inventory" {
   content = <<-EOT
-    app_server:
+    app_servers:
       hosts:
-        ${aws_instance.app_server.public_ip}:
+%{ for ip in aws_instance.app_servers[*].private_ip ~}
+        ${ip}:
+%{ endfor ~}
+      vars:
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: ${local_sensitive_file.pem_file.filename}
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyCommand="ssh -W %h:%p -q ubuntu@${aws_instance.haproxy.public_ip} -i ${local_sensitive_file.pem_file.filename} -o StrictHostKeyChecking=no"'
+
+    load_balancers:
+      hosts:
+        ${aws_instance.haproxy.public_ip}:
       vars:
         ansible_user: ubuntu
         ansible_ssh_private_key_file: ${local_sensitive_file.pem_file.filename}
