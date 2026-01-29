@@ -1,24 +1,24 @@
 # IaC AWS - Olympic Tracker Documentation
 
-Bienvenue sur la documentation technique du projet **IaC AWS - Olympic Tracker Documentation**. Ce site regroupe toutes les informations nécessaires pour comprendre, provisionner et déployer l'infrastructure.
+Bienvenue sur la documentation technique du projet **IaC AWS - Olympic Tracker**.
 
 ## Objectifs du projet
 
-Ce projet sert de démonstration pour un workflow DevOps moderne :
+Ce projet démontre un workflow DevOps complet intégrant la Haute Disponibilité (HA) :
 
-- **Infrastructure as Code** avec Terraform.
-- **Gestion de configuration** avec Ansible (Rôles & Galaxy).
-- **Conteneurisation** avec Docker.
-- **Sécurité** via Ansible Vault pour la gestion des secrets.
+- **Infrastructure as Code** : Terraform pour le multi-tiering.
+- **Gestion de configuration** : Ansible (Rôles, Galaxy & Bastion SSH).
+- **Load Balancing** : HAProxy pour la répartition de charge Round Robin.
+- **Conteneurisation** : Docker pour l'isolation applicative.
+- **Sécurité** : Isolation VPC et Ansible Vault.
 
-## 🏗️ Architecture Simplifiée
+## 🏗️ Architecture Réseau
 
-Le déploiement suit un flux linéaire :
+Le déploiement suit un flux optimisé :
 
-1. **Terraform** : Création de l'instance EC2 sur AWS.
-2. **Local** : Génération automatique de l'inventaire Ansible avec l'IP publique.
-3. **Ansible** : Configuration de la machine (Docker, PIP) et déploiement du conteneur applicatif.
-
----
-
-_Utilisez le menu de navigation pour explorer les détails de l'installation et du déploiement._
+1. **Terraform** : Création du cluster (1 LB + X Apps).
+2. **Local** : Génération de l'inventaire Ansible incluant les directives `ProxyCommand` pour le bastion.
+3. **Ansible** :
+   - Déploiement de l'app sur les IPs privées des serveurs.
+   - Configuration du Load Balancer pour exposer l'application sur le port 80 public.
+4. **Monitoring** : Monitoring du cluster via le dashboard de statistiques HAProxy (Port 8080).

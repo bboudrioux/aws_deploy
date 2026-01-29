@@ -1,17 +1,21 @@
 # Détails de l'Infrastructure (Terraform)
 
-L'infrastructure est décomposée en plusieurs fichiers pour une meilleure maintenance.
+L'infrastructure est décomposée en plusieurs fichiers pour une meilleure maintenance et permet une haute disponibilité.
 
 ## Structure Terraform
 
 - `providers.tf` : Configuration des sources (AWS, TLS, Local).
 - `variables.tf` : Centralisation des paramètres (Région, Type d'instance).
-- `security.tf` : Groupe de sécurité (Ports 22 et 80 ouverts).
-- `ssh.tf` : Génération des clés SSH et de l'inventaire Ansible.
-- `main.tf` : Définition de l'instance EC2.
-- `ansible.tf` : Glue code générant le fichier `hosts.yml`.
+- `security.tf` : Groupes de sécurité isolés (Frontend LB vs Backend App).
+- `ssh.tf` : Génération des clés SSH sécurisées.
+- `main.tf` : Définition des instances EC2 (Multi-instances pour l'App et instance dédiée HAProxy).
+- `ansible.tf` : Glue code générant l'inventaire dynamique `hosts.yml` avec support du ProxyJump.
 
-## 🛡️ Sécurité
+## 🛡️ Sécurité & Réseau
 
-- Les clés privées (`.pem`) sont générées à la volée et stockées localement avec des permissions restreintes (`0600`).
-- Le groupe de sécurité applique le principe du moindre privilège.
+- **Isolation Réseau** : Les serveurs applicatifs utilisent leurs **IPs privées** pour limiter l'exposition.
+- **Bastion SSH** : L'accès aux serveurs applicatifs se fait via un rebond (Jump Host) sur l'instance HAProxy.
+- **Security Groups** :
+  - `haproxy_sg` : Ports 80 (Web), 22 (SSH) et 8080 (Stats) ouverts.
+  - `app_sg` : Flux restreint au port 80 provenant uniquement du Load Balancer.
+- **Clés SSH** : Stockage local restreint (`0600`) et rotation gérée par Terraform.
