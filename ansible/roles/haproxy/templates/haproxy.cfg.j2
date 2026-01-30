@@ -21,11 +21,12 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    {% for host in groups['app_servers'] %}
+    option httpchk GET /
+{% for host in groups['app_servers'] %}
     server app_server_{{ loop.index }} {{ host }}:80 check
-    {% endfor %}
+{% endfor %}
 
-# Optionnel : Page de statistiques HAProxy
+# Page de statistiques HAProxy
 listen stats
     bind *:8080
     mode http

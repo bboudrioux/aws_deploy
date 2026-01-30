@@ -7,7 +7,7 @@ resource "aws_instance" "app_servers" {
   key_name = aws_key_pair.generated_key.key_name
   
   tags = {
-    Name = "${var.project_name}-AppServer-${count.index}"
+    Name = "${var.project_name}-AppServer-${count.index + 1}"
   }
 }
 
