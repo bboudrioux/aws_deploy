@@ -1,6 +1,14 @@
 [tools]
 terraform = "1.14.0"
 ansible = "latest"
+trivy = "latest"
+
+[env]
+TRIVY_SEVERITY = "HIGH,CRITICAL"
+
+[tasks.scan]
+description = "Scan complet de la sécurité (Terraform)"
+run = "trivy config ./terraform"
 
 [tasks."infra:init"]
 description = "Initialise l'environnement Terraform"

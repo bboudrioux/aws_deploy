@@ -1,0 +1,3 @@
+# Ignorer l'alerte Egress illimité (AWS-0104) car nécessaire pour APT/Docker updates
+# Lien : https://avd.aquasec.com/misconfig/aws-0104
+AWS-0104

@@ -1,7 +1,7 @@
 .terraform/
 *.tfstate
 *.tfstate.backup
-.terraform.lock.hcl
+.terraform*
 crash.log
 override.tf
 override.tf.json
@@ -12,6 +12,5 @@ override.tf.json
 .idea/
 *.iml
 .DS_Store
-ansible.cfg
 *.retry
 ansible/secrets.yml
